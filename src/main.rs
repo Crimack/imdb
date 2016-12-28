@@ -1,5 +1,5 @@
 extern crate csv;
-use csv::{Reader, Writer};
+use csv::Reader;
 
 extern crate imdb;
 use imdb::models::{Rating, RatingCompare, Row};
@@ -54,11 +54,11 @@ fn compare_ratings(person1_ratings: &[Rating], person2_ratings: &[Rating]) {
         let choice = match trimmed.parse::<usize>() {
             Ok(i) =>  i,
             Err(..) => {
-                println!("this was not an integer: {}", trimmed);
-                0
+                println!("Not a valid integer: {}. Values must match the list above", trimmed);
+                continue;
             }
         };
-        if choice > shared_ratings.len() || choice < 0 {
+        if choice > shared_ratings.len() {
             println!("Invalid entry, please try again");
             continue;
         }
@@ -73,7 +73,16 @@ fn compare_ratings(person1_ratings: &[Rating], person2_ratings: &[Rating]) {
     }
 }
 
-fn help() { println!("You've goofed")}
+fn help() { println!("Little fun command line program to compare IMDB ratings which have been exported using the online tool
+
+Usage:
+imdb <path to first CSV file> <path to second CSV file> 
+e.g. imdb ~/data/rate1.csv ~/data/rate2.csv
+
+This will then create an interactive prompt, where you can see which movies both of you have rated. 
+You may then choose a movie to see your individual ratings.
+
+")}
 
 fn main() {
     let args: Vec<String> = env::args().collect();
